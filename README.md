@@ -2,7 +2,7 @@
 实现 input值、html值 以及 js变量 的全双向自动绑定。
 jQuery Model View bidirectional binding plugin.
 
-AngularJS的双向绑定理念非常棒，但是AngularJS这个库太庞大了，不但不易与其他js库共用，而且需要改动hmtl结构，对非新项目以及只需简单的双向绑定功能并不太适用。因此写了这个轻量级的基于jquery的plugin。
+AngularJS的双向绑定理念非常棒，但是AngularJS这个库太庞大了，不但不易与其他js库共用，而且需要改动hmtl结构，对非新项目以及只需简单的双向绑定时并不太适用。因此写了这个轻量级的基于jquery的plugin。
 
 sample code:
 
