@@ -25,9 +25,11 @@ $.fn.extend({
 		}
 
 		$.each(this,function(){
-			if(this.tagName === 'INPUT'){
-				this.addEventListener('keyup',function(){
-					MV.bindInput(varName,this.value,selector);
+			if(this.tagName === 'INPUT' || this.tagName === 'TEXTAREA'){
+				this.addEventListener('keyup',function(e){
+					if(e.ctrlKey != 1 && e.keyCode != 17){ // ignore if ctrl key is pressed to allow ctrl+a select all etc.
+						MV.bindInput(varName,this.value,selector);
+					}
 				});
 				this.addEventListener('cut',function(){
 					var elem = this;
