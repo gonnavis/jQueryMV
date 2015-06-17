@@ -5,7 +5,7 @@ MV.bindInput = function(varName,value,selector){
 }
 
 $.fn.extend({
-	mvBind: function(varName,fn){
+	mvBind: function(varName,customFn){
 		var selector = this.selector;
 
 		if(!MV[varName]){
@@ -17,8 +17,8 @@ $.fn.extend({
 					this['_'+varName] = newValue;
 					$(selector).val(newValue);
 					$(selector).html(newValue);
-					if(fn){
-						fn();
+					if(customFn){
+						customFn();
 					}
 				}
 			});
