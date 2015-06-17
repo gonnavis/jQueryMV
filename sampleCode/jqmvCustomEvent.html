@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">	
+</head>
+<body>
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script type="text/javascript">
+// jQueryMV
+
+var MV = {};
+MV.bindInput = function(varName,value,selector){
+	MV[varName] = value;
+	MV['_'+varName] = value;
+}
+
+$.fn.extend({
+	mvBind: function(varName,customFn){
+		var selector = this.selector;
+
+		if(!MV[varName]){
+			Object.defineProperty(MV, varName, {
+				get: function(){
+					return this['_'+varName];
+				},
+				set: function(newValue){
+					this['_'+varName] = newValue;
+					$(selector).val(newValue);
+					$(selector).html(newValue);
+					if(customFn){
+						customFn();
+					}
+				}
+			});
+		}
+
+		$.each(this,function(){
+			if(this.tagName === 'INPUT'){
+				this.addEventListener('keyup',function(){
+					MV.bindInput(varName,this.value,selector);
+				});
+				this.addEventListener('cut',function(){
+					var elem = this;
+					setTimeout(function(){
+						MV.bindInput(varName,elem.value,selector);
+					},4);
+				});
+				this.addEventListener('paste',function(){
+					var elem = this;
+					setTimeout(function(){
+						MV.bindInput(varName,elem.value,selector);
+					},4);
+				});
+			}
+		});
+	}
+});
+</script>
+
+<style type="text/css">
+	div{border:solid 1px;width:200px;height:100px;display: inline-block;}
+</style>
+<div></div><div></div><div></div><div></div><div></div><div></div>
+<br>
+<input> please enter number 0~5 
+
+<script type="text/javascript">
+//test
+$(function(){
+	$('input').mvBind('index',function(){
+		$('div').css('background','transparent').eq(MV.index).css('background','red');
+	});
+});
+	
+
+</script>
+
+</body>
+
+</html>

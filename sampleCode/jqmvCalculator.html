@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">	
+</head>
+<body>
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script type="text/javascript">
+// jQueryMV
+
+var MV = {};
+MV.bindInput = function(varName,value,selector){
+	MV[varName] = value;
+	MV['_'+varName] = value;
+}
+
+$.fn.extend({
+	mvBind: function(varName){
+		var selector = this.selector;
+
+		if(!MV[varName]){
+			Object.defineProperty(MV, varName, {
+				get: function(){
+					return this['_'+varName];
+				},
+				set: function(newValue){
+					this['_'+varName] = newValue;
+					$(selector).val(newValue);
+					$(selector).html(newValue);
+				}
+			});
+		}
+
+		$.each(this,function(){
+			if(this.tagName === 'INPUT'){
+				this.addEventListener('keyup',function(){
+					MV.bindInput(varName,this.value,selector);
+				});
+				this.addEventListener('cut',function(){
+					var elem = this;
+					setTimeout(function(){
+						MV.bindInput(varName,elem.value,selector);
+					},4);
+				});
+				this.addEventListener('paste',function(){
+					var elem = this;
+					setTimeout(function(){
+						MV.bindInput(varName,elem.value,selector);
+					},4);
+				});
+			}
+		});
+	}
+});
+</script>
+
+
+<input class="num1"> * <input class="num2"> = <span class="result"></span><br>
+<button>calc</button>
+
+<script type="text/javascript">
+//test
+
+	$('.num1').mvBind('num1');
+	$('.num2').mvBind('num2');
+	$('.result').mvBind('result');
+	$('button').click(function(){
+		MV.result=MV.num1*MV.num2;
+	});
+
+</script>
+
+</body>
+
+</html>
